@@ -20,7 +20,18 @@ class AccountsController {
 		$pass = (isset($_POST['pass'])) ? $_POST['pass'] : null;
 
 		try { // se houver algum erro dentro desse bloco, o bloco catch será chamado
-			
+			if (!$name || strlen($name) == 0){
+				throw new Exception('Você precisa informar um nome');
+			}
+
+			if (!$email || strlen($email) < 3){
+				throw new Exception('Você precisa informar um email');
+			}
+
+			if (!$pass || strlen($pass) == 0){
+				throw new Exception('Você precisa informar uma senha');
+			}
+
 			// Tudo válido até aqui, então chamamos o model e salvamos o usuário
 			$db = new Database();
 			$result = $db->insert(

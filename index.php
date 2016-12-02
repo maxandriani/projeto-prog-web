@@ -42,7 +42,7 @@ if (AccountsController::is_user_logged_in()){ // Verifica se existe um usuário 
 			break;
 		default:
 			// Se nenhuma das condições for satisfeita, imprime a lista de livros
-			StaticController::restrict();
+			StaticController::restrict_page();
 	}
 } else {
 	// Rotas públicas
@@ -65,6 +65,6 @@ if (AccountsController::is_user_logged_in()){ // Verifica se existe um usuário 
 			break;
 		default:
 			// Se nenhuma das condições for satisfeita, imprime a página de login
-			StaticController::public();
+			StaticController::public_page();
 	}
 }
