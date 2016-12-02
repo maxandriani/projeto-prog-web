@@ -1,11 +1,11 @@
-create database livraria;
+create database livraria SET utf8 COLLATE utf8_general_ci;;
 
 use livraria;
 
 create table categorias (
 	cat_id int primary key auto_increment not null,
 	descricao varchar(150)
-);
+) DEFAULT CHARACTER SET=utf8;
 
 create table livros (
 	liv_id int primary key auto_increment not null,
@@ -17,14 +17,14 @@ create table livros (
 	preco decimal(10,2),
 	paph varchar(150),
 	foreign key (categoria_id) references categorias(cat_id)
-);
+) DEFAULT CHARACTER SET=utf8;
 
 create table usuarios (
 	user_id int primary key auto_increment not null,
 	nome varchar(150),
 	email varchar(255) not null,
 	senha varchar(32) not null
-);
+) DEFAULT CHARACTER SET=utf8;
 
 insert into categorias (descricao)
 values('Ficção');
