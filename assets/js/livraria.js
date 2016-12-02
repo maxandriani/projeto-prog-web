@@ -25,8 +25,12 @@
 			build_notification('danger', err.message);
 		} else {
 			// Caso contrário, imprime o que veio na resposta
-			for(var x in err.responseJSON.errors){
-				build_notification('danger', err.responseJSON.errors[x]);
+			if (err.responseJSON.errors){
+				for(var x in err.responseJSON.errors){
+					build_notification('danger', err.responseJSON.errors[x]);
+				}
+			} else {
+				build_notification('danger', 'Falha na conexão.');
 			}
 		}	
 	};
