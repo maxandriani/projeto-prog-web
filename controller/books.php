@@ -127,7 +127,7 @@ class BooksController {
 		$response = new Response();
 
 		// Verifica se existem strings de busca
-		$search = (isset($_GET['query']))? $_GET['query'] : null;
+		$search = (isset($_GET['search']))? $_GET['search'] : null;
 
 		try {
 			$db = new Database();
@@ -146,17 +146,20 @@ class BooksController {
 						'From '.
 							'livros as l '.
 						'Join '.
-							'categorias as c On l.categoria_id = c.cat_id '.
-						'Order By '.
-							'l.titulo Asc ';
+							'categorias as c On l.categoria_id = c.cat_id ';
 			// Se houver string, então complementa a query
 			if ($search){
+				$search = str_replace("\s", "%", trim($search));
+				$search = '%' . $search . '%';
 				$query .= 'Where '.
-						'l.titulo LIKE %:search% '.
-						'Or l.autor LIKE %:search% '.
-						'Or l.descricao LIKE %:search% ;';
+						'l.titulo LIKE :search '.
+						'Or l.autor LIKE :search '.
+						'Or l.descricao LIKE :search ';
 				$values['search'] = $search;
 			}
+
+			$query .= 'Order By '.
+							'l.titulo Asc ;';
 
 			// Cria o statement
 			$stmt = $db->conn->prepare( $query );

@@ -119,25 +119,31 @@
 	};
 
 	// Carrega a lista de livros
-	function load_books( search ){
-		return connect('GET', 'index.php?q=/books', { search: search })
-			.done(function(response){
-				// Procura o elemento container (.library-grid)
-				var grid = $(".library-grid");
-				// Remove todo o conteúdo dentro dele;
-				grid.html('');
-				// Para cada registro encontrado, cria um card
-				for (var x in response.data){
-					var book = response.data[x];
-					var card = build_book_card( book );
-					// esconde o card visualmente
-					card.hide();
-					grid.append(card);
-					// revela o card somente após inserido
-					card.fadeIn();
-				}
-			})
-			.fail(notify_error);
+	function load_books( search, silent ){
+		var rq = connect('GET', 'index.php?q=/books', { search: search });
+
+		rq.done(function(response){
+			// Procura o elemento container (.library-grid)
+			var grid = $(".library-grid");
+			// Remove todo o conteúdo dentro dele;
+			grid.html('');
+			// Para cada registro encontrado, cria um card
+			for (var x in response.data){
+				var book = response.data[x];
+				var card = build_book_card( book );
+				// esconde o card visualmente
+				card.hide();
+				grid.append(card);
+				// revela o card somente após inserido
+				card.fadeIn();
+			}
+		});
+
+		if (!silent){
+			rq.fail(notify_error);
+		}
+		
+		return rq;
 	};
 
 	// Cria um card html com as informações do livro
@@ -228,15 +234,29 @@
 		$('#registerForm').on('submit', register_user);
 		// Adiciona o evento de registrar novo livro no formulário de registro de livros
 		$('#insertForm').on('submit', register_books);
-		// Adiciona o evento de autocompletar
+
+		/**
+		 * formulário de pesquisa
+		 */
 		$last_call = null
-		$('#searchField').on('keyup', function(){
+		function search_call(e){
+			e.preventDefault();
+			var $search = $(this).find("[name='search']").val();
 			// Verifica se existe uma chamada para load_books em andamento
 			if ($last_call){
 				$last_call.abort(); // Se sim, cancela ela
 			}
-			$last_call = load_books($(this).val()); // Cria uma nova requisição
-		})
+			$last_call = load_books( $search, true ); // Cria uma nova requisição
+		}
+
+		// Adiciona o evento de submeter formulário
+		$('#searchForm').on('submit', search_call);
+		// Força a submussão do formulário a cada tecla pressionada na barra de pesquisa
+		$("#searchForm input[name='search']").on('keyup', function(e){
+			if (e.key != 'Enter'){
+				$('#searchForm').trigger('submit');
+			}
+		});
 
 	});
 })(jQuery);

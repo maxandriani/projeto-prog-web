@@ -6,13 +6,16 @@ require 'view/partial/header.html.php'; ?>
 			<div class="row">
 				<div class="col-sm-8">
 					<!-- filter -->
-					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Search for...">
-						<span class="input-group-btn">
-							<button class="btn btn-default glyphicon glyphicon-search" type="button"></button>
-						</span>
-					</div><!-- /input-group -->
-
+					<form name="search-form" id="searchForm">
+						<div class="input-group">
+							<input type="text" name="search" class="form-control" placeholder="Pesquisar ...">
+							<span class="input-group-btn">
+								<button class="btn btn-default glyphicon glyphicon-search" type="submit"></button>
+							</span>
+						</div><!-- /input-group -->
+					</form>
+					<br />
+					
 					<!-- cards area -->
 					<div class="row library-grid"></div> <!-- // cards area -->
 				</div>
