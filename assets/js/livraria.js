@@ -129,18 +129,36 @@
 		rq.done(function(response){
 			// Procura o elemento container (.library-grid)
 			var grid = $(".library-grid");
+			var categories = {};
 			// Remove todo o conteúdo dentro dele;
-			grid.html('');
+			grid
+				.hide()
+				.html('');
 			// Para cada registro encontrado, cria um card
 			for (var x in response.data){
 				var book = response.data[x];
 				var card = build_book_card( book );
+
+				// check category
+				if (typeof categories[book.category_id] == 'undefined'){
+					categories[book.category_id] = build_category_section({
+						id: book.category_id,
+						name: book.category
+					});
+
+					grid.append( categories[book.category_id] );
+				}
+
 				// esconde o card visualmente
-				card.hide();
-				grid.append(card);
-				// revela o card somente após inserido
-				card.fadeIn();
+				categories[book.category_id]
+					.children('.book-list')
+					.append(card);
 			}
+
+			// show result
+			grid.fadeIn();
+
+			delete categories;
 		});
 
 		if (!silent){
@@ -149,6 +167,16 @@
 		
 		return rq;
 	};
+
+	// Cria bloco de categories
+	function build_category_section( category ){
+		return cat = $( `<div class="book-category" data-category-id="${category.id}">` +
+											`<div class="page-header">`+
+												`<h3>${category.name}</h3>`+
+											`</div>`+
+											`<div class="row book-list"></div>`+
+										`</div>`);
+	}
 
 	// Cria um card html com as informações do livro
 	function build_book_card( book ){

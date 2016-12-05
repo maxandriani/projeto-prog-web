@@ -17,7 +17,7 @@ require 'view/partial/header.html.php'; ?>
 					<br />
 					
 					<!-- cards area -->
-					<div class="row library-grid"></div> <!-- // cards area -->
+					<div class="library-grid"></div> <!-- // cards area -->
 				</div>
 
 				<div class="col-sm-4">

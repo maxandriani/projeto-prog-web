@@ -139,6 +139,7 @@ class BooksController {
 							'l.titulo as title, '.
 							'l.descricao as description, '.
 							'c.descricao as category, '.
+							'c.categoria_id as category_id, '.
 							'l.autor as author, '.
 							'l.ano as year, '.
 							'l.preco as price, '.
@@ -159,6 +160,7 @@ class BooksController {
 			}
 
 			$query .= 'Order By '.
+							'c.descricao Asc, '.
 							'l.titulo Asc ;';
 
 			// Cria o statement
