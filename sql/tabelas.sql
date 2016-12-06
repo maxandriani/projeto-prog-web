@@ -16,6 +16,7 @@ create table livros (
 	ano int,
 	preco decimal(10,2),
 	paph varchar(150),
+	badge int,
 	foreign key (categoria_id) references categorias(cat_id)
 ) DEFAULT CHARACTER SET=utf8;
 

@@ -183,6 +183,7 @@
 		// Cria o card do livro com uso de jQuery
 		var card = $(`<div class="col-sm-6 col-md-4">`+
 									`<div class="thumbnail">`+
+										`<div class="badge">${book.badge}</div>`+
 										`<img src="${book.cover}" alt="${book.title}">`+
 										`<div class="caption hide">`+
 											`<h3>${book.title}</h3>`+
@@ -197,6 +198,12 @@
 										`</div>`+
 									`</div>`+
 								`</div>`);
+
+		if (!book.badge){
+			card
+				.find('.badge')
+				.hide();
+		}
 
 		// Adiciona o evento de remover livro no botão remover
 		card
@@ -218,6 +225,17 @@
 
 				if (caption.hasClass('hide')){
 					caption.removeClass('hide');
+					if (!book.badge){
+						book.badge = 0;
+					}
+					book.badge++;
+					card
+						.find('.badge')
+						.html(book.badge)
+						.removeClass('hide')
+						.removeAttr('style')
+					connect('POST', 'index.php?q=/books/badge', { book_id: book.id, badge: book.badge })
+						.fail(notify_error);
 				} else {
 					caption.addClass('hide');
 				}

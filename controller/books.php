@@ -143,7 +143,8 @@ class BooksController {
 							'l.autor as author, '.
 							'l.ano as year, '.
 							'l.preco as price, '.
-							'l.paph as cover '.
+							'l.paph as cover, '.
+							'l.badge as badge '.
 						'From '.
 							'livros as l '.
 						'Join '.
@@ -189,6 +190,42 @@ class BooksController {
 			
 			$response->json($categories);
 		} catch(Exception $e) {
+			$response->error($e);
+		}
+	}
+
+	public static function update_badge(){
+		$response = new Response();
+
+		try {
+			$data = file_get_contents("php://input");
+			parse_str($data, $_POST);
+
+			$book_id = (isset($_POST['book_id']))? intval($_POST['book_id']) : null;
+			$badge   = (isset($_POST['badge']))? intval($_POST['badge']) : null;
+
+			if (!is_int($book_id)){
+				throw new Exception('Identificador de livro inválido');
+			}
+
+			if (!is_int($badge)){
+				throw new Exception('O valor do badge é inválido');
+			}
+
+			$db = new Database();
+			$query = 'Update livros Set badge = :badge Where liv_id = :book_id Limit 1;';
+			$stmt = $db->conn->prepare($query);
+			
+			if (!$stmt->execute(array(
+				'book_id' => $book_id,
+				'badge' => $badge
+			))){
+				throw new Exception('Falha ao atualizar badge');
+			}
+
+			$response->json(true);
+
+		} catch (Exception $e) {
 			$response->error($e);
 		}
 	}

@@ -36,6 +36,13 @@ if (AccountsController::is_user_logged_in()){ // Verifica se existe um usuário 
 			} else {
 				StaticController::not_found();
 			}
+			break;
+		case '/books/badge':
+			if ($method == 'POST'){
+				// UPDATE BADGE COUNT
+				BooksController::update_badge();
+			}
+			break;
 		case '/account/logout':
 			// Para qualquer método, Destroi a sessão corrente
 			AccountsController::logout();

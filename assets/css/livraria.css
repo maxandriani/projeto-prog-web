@@ -8,3 +8,11 @@
 	height: auto;
 	max-height: 90px;
 }
+
+.thumbnail .badge {
+	float: right;
+	font-size: 16pt;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
